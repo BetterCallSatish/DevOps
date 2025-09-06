@@ -1,253 +1,283 @@
-# 🐙 Git Real-Time Simulation – Satish Edition
+# 🐙 Complete Git Guide for Satish – Advanced Edition
 
 ---
 
-## 1️⃣ Create Project & Initialize Git
-
-**Terminal Commands & Output:**
+## 1️⃣ Git Basics – Setup & Initial Commit
 
 ```bash
-$ mkdir MyLinuxBlog
-$ cd MyLinuxBlog
-$ git init
-Initialized empty Git repository in /Users/Satish/MyLinuxBlog/.git/
+# Configure user
+git config --global user.name "Satish"
+git config --global user.email "satish@example.com"
+
+# Verify configuration
+git config --list
+
+# Initialize a new repo
+mkdir MyLinuxBlog
+cd MyLinuxBlog
+git init
 ```
 
-**File Structure:**
+**Explanation:**
 
-```
-MyLinuxBlog/
-└── .git/
-```
+* Sets your identity
+* `git init` creates a `.git` folder to track changes
 
----
-
-## 2️⃣ Create First File & Commit
+**Add first file & commit:**
 
 ```bash
-$ echo "# Satish's Linux Commands" > satish_commands.md
-$ git status
-On branch main
-No commits yet
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        satish_commands.md
-
-$ git add satish_commands.md
-$ git commit -m "Add initial Linux commands file"
-[main (root-commit) a1b2c3d] Add initial Linux commands file
- 1 file changed, 1 insertion(+)
- create mode 100644 satish_commands.md
-```
-
-**File Content:**
-
-```
-# Satish's Linux Commands
+echo "# Satish's Linux Commands" > satish_commands.md
+git status
+git add satish_commands.md
+git commit -m "Add initial Linux commands file"
 ```
 
 **Git Log:**
 
-```bash
-$ git log --oneline
+```
 a1b2c3d (HEAD -> main) Add initial Linux commands file
 ```
 
 ---
 
-## 3️⃣ Add Basic Linux Commands
+## 2️⃣ Common Git Commands
 
-```bash
-$ echo "- ls" >> satish_commands.md
-$ echo "- cd" >> satish_commands.md
-$ git status
-On branch main
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-        modified:   satish_commands.md
-
-$ git diff
-diff --git a/satish_commands.md b/satish_commands.md
-index e69de29..d95f3ad 100644
---- a/satish_commands.md
-+++ b/satish_commands.md
-@@ -0,0 +1,2 @@
-+- ls
-+- cd
-
-$ git add satish_commands.md
-$ git commit -m "Add basic Linux commands"
-[main 4d5e6f7] Add basic Linux commands
- 1 file changed, 2 insertions(+)
-```
-
-**File Content Now:**
-
-```
-# Satish's Linux Commands
-- ls
-- cd
-```
+| Command                       | Explanation                 | Example                                |
+| ----------------------------- | --------------------------- | -------------------------------------- |
+| `git status`                  | Show current changes        | `$ git status`                         |
+| `git diff`                    | Show changes before staging | `$ git diff`                           |
+| `git add <file>`              | Stage changes               | `$ git add satish_commands.md`         |
+| `git commit -m "msg"`         | Commit staged changes       | `$ git commit -m "Add basic commands"` |
+| `git log`                     | Show commit history         | `$ git log --oneline`                  |
+| `git branch`                  | Show branches               | `$ git branch`                         |
+| `git checkout <branch>`       | Switch branch               | `$ git checkout advanced-commands`     |
+| `git merge <branch>`          | Merge another branch        | `$ git merge advanced-commands`        |
+| `git remote add origin <url>` | Connect remote repo         | `$ git remote add origin <URL>`        |
+| `git push`                    | Push commits to remote      | `$ git push -u origin main`            |
+| `git pull`                    | Pull changes from remote    | `$ git pull origin main`               |
 
 ---
 
-## 4️⃣ Create Branch for Advanced Commands
+## 3️⃣ Branching Workflows
 
-```bash
-$ git branch advanced-commands
-$ git checkout advanced-commands
-Switched to branch 'advanced-commands'
-
-$ echo "- grep" >> satish_commands.md
-$ echo "- awk" >> satish_commands.md
-$ git add satish_commands.md
-$ git commit -m "Add advanced Linux commands"
-[advanced-commands 7g8h9i0] Add advanced Linux commands
- 1 file changed, 2 insertions(+)
-```
-
-**File Content in Branch:**
-
-```
-# Satish's Linux Commands
-- ls
-- cd
-- grep
-- awk
-```
-
-**Git Log on Branch:**
-
-```bash
-$ git log --oneline
-7g8h9i0 (HEAD -> advanced-commands) Add advanced Linux commands
-4d5e6f7 Add basic Linux commands
-a1b2c3d Add initial Linux commands file
-```
-
----
-
-## 5️⃣ Merge Branch Back to Main
-
-```bash
-$ git checkout main
-Switched to branch 'main'
-$ git merge advanced-commands
-Updating 4d5e6f7..7g8h9i0
-Fast-forward
- satish_commands.md | 2 ++
- 1 file changed, 2 insertions(+)
-```
-
-**File Content After Merge:**
-
-```
-# Satish's Linux Commands
-- ls
-- cd
-- grep
-- awk
-```
-
-**Commit Diagram:**
+**Feature Branch Workflow (Recommended):**
 
 ```
 main ──●────●────●
         \
-advanced-commands ──●
+feature ──●────●
+```
+
+**Commands:**
+
+```bash
+git branch feature-login
+git checkout feature-login
+# Make changes
+git add .
+git commit -m "Add login feature"
+git checkout main
+git merge feature-login
+```
+
+**Explanation:**
+
+* Main branch stays stable
+* Features developed in separate branch
+* Merge back when complete
+
+---
+
+## 4️⃣ Advanced Commands
+
+### 4.1 Reverting Changes
+
+```bash
+# Undo last commit but keep changes staged
+git reset --soft HEAD~1
+
+# Undo last commit and discard changes
+git reset --hard HEAD~1
+
+# Revert a commit safely
+git revert <commit-id>
 ```
 
 ---
 
-## 6️⃣ Push to GitHub
+### 4.2 Stashing Work
 
 ```bash
-$ git remote add origin https://github.com/Satish/MyLinuxBlog.git
-$ git push -u origin main
-Enumerating objects: 5, done.
-Counting objects: 100% (5/5), done.
-Writing objects: 100% (5/5), 500 bytes | 500.00 KiB/s, done.
-Total 5 (delta 0), reused 0 (delta 0)
-To https://github.com/Satish/MyLinuxBlog.git
- * [new branch]      main -> main
+git stash save "WIP"
+git stash list
+git stash apply
+git stash pop
+git stash drop
 ```
 
-**GitHub Repository View:**
+**Explanation:**
 
-```
-Repository: MyLinuxBlog
-Files:
-- satish_commands.md
-Branches:
-- main (with latest merged changes)
-Commits:
-- Add advanced Linux commands
-- Add basic Linux commands
-- Add initial Linux commands file
+* Save unfinished work temporarily
+* Switch branches safely
+
+---
+
+### 4.3 Tagging Releases
+
+```bash
+git tag -a v1.0 -m "First release"
+git push origin v1.0
 ```
 
 ---
 
-## 7️⃣ Stash Example
+### 4.4 Cherry-Pick a Commit
 
 ```bash
-$ echo "- sed" >> satish_commands.md
-$ git stash save "Add sed command"
-Saved working directory and index state WIP on main: 7g8h9i0 Add advanced Linux commands
-
-$ git stash list
-stash@{0}: WIP on main: 7g8h9i0 Add advanced Linux commands
-
-$ git stash apply
+git checkout main
+git cherry-pick <commit-id>
 ```
 
-**File Content After Applying Stash:**
+**Explanation:**
+
+* Apply a specific commit from another branch
+* Useful to bring only important fixes
+
+---
+
+### 4.5 Rebasing Branches
+
+```bash
+git checkout feature
+git rebase main
+```
+
+**Explanation:**
+
+* Reapply commits on top of another branch
+* Keeps history **linear and clean**
+
+---
+
+### 4.6 Git Blame & History
+
+```bash
+git blame satish_commands.md
+git log --stat
+git log --graph --oneline --all
+```
+
+**Explanation:**
+
+* See **who changed what**
+* Track history visually
+
+---
+
+## 5️⃣ Collaboration Workflow
+
+1. **Clone repo**
+
+```bash
+git clone https://github.com/Satish/MyLinuxBlog.git
+```
+
+2. **Create new feature branch**
+
+```bash
+git checkout -b feature-xyz
+```
+
+3. **Make changes & commit**
+
+```bash
+git add .
+git commit -m "Implement xyz"
+```
+
+4. **Pull latest changes from main**
+
+```bash
+git checkout main
+git pull origin main
+```
+
+5. **Merge feature branch**
+
+```bash
+git checkout main
+git merge feature-xyz
+```
+
+6. **Push to remote**
+
+```bash
+git push origin main
+```
+
+---
+
+## 6️⃣ Real-Time Example: Advanced Flow
+
+```bash
+# Create project
+mkdir MyLinuxBlog && cd MyLinuxBlog && git init
+
+# Add file
+echo "# Satish Linux Commands" > satish_commands.md
+git add . && git commit -m "Initial commit"
+
+# Create feature branch
+git checkout -b feature-advanced
+
+# Add advanced commands
+echo "- grep" >> satish_commands.md
+echo "- awk" >> satish_commands.md
+git add . && git commit -m "Add advanced commands"
+
+# Merge into main
+git checkout main
+git merge feature-advanced
+
+# Push to GitHub
+git remote add origin https://github.com/Satish/MyLinuxBlog.git
+git push -u origin main
+```
+
+**Resulting File Content:**
 
 ```
-# Satish's Linux Commands
+# Satish Linux Commands
 - ls
 - cd
 - grep
 - awk
-- sed
+```
+
+**Branch Diagram:**
+
+```
+main ──●────●────●
+        \
+feature-advanced ──●
 ```
 
 ---
 
-## 8️⃣ Tagging a Release
+## 7️⃣ Summary – Git Flows
 
-```bash
-$ git tag -a v1.0 -m "Initial release of Satish's Linux Commands"
-$ git push origin v1.0
-```
+* **Basic Flow:** Add → Commit → Push
+* **Feature Flow:** Branch → Commit → Merge → Push
+* **Advanced Flow:** Rebase → Cherry-pick → Stash → Tag
 
-**GitHub View:**
-
-* Tag `v1.0` marks the exact snapshot of your project.
-
----
-
-## ✅ Git Workflow Visualization
+**Visualization of Full Workflow:**
 
 ```
 main ──●────●────●────●
         \
-advanced-commands ──●
+feature-login ──●────●
+        \
+feature-bugfix ──●
 ```
 
-**Workflow Explanation:**
 
-1. **Initialize repo** → `git init`
-2. **Add & commit files** → `git add` → `git commit`
-3. **Create branch** → `git branch` → `git checkout`
-4. **Edit & commit in branch**
-5. **Merge branch** → `git merge`
-6. **Push to GitHub** → `git push`
-7. **Pull updates** → `git pull`
-8. **Stash changes** → `git stash`
-9. **Tag releases** → `git tag -a v1.0`
-
-
-If you want, I can now **take this and make a fully formatted, colorful Markdown file with emojis, headings, and code blocks ready to upload to GitHub**, which will **look like a professional Git tutorial blog**.
-
-Do you want me to create that polished Markdown next?
