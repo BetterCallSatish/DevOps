@@ -1,387 +1,435 @@
-# Git: The Ultimate Guide for Everyone (Even if You're Not a Coder!)
-
-Ever worked on a document, made a bunch of changes, and then thought, "Oh no, the old version was better!"? Or have you ever tried to collaborate on a project with a team, only to end up with a dozen files named `Report-final.docx`, `Report-final-v2.docx`, and `Report-FINAL-Johns-version.docx`?
-
-It's a mess. Git is the solution.
-
-**In the simplest terms, Git is a time machine and a collaboration tool for your files.** It takes "snapshots" of your project, allowing you to go back to any previous version. It also lets multiple people work on the same project without stepping on each other's toes.
-
-This guide will walk you through everything you need to know, from the absolute basics to powerful advanced features, all in simple, everyday language.
-
-## Table of Contents
-1.  [The Big Picture: How Git Thinks](#the-big-picture-how-git-thinks)
-2.  [The Setup (One-Time-Only)](#️-the-setup-one-time-only)
-3.  [The Daily Grind (Your Everyday Toolkit)](#️-the-daily-grind-your-everyday-toolkit)
-4.  [Working in Parallel (The Magic of Branches)](#-working-in-parallel-the-magic-of-branches)
-5.  [The Time Machine (Viewing History & Undoing Mistakes)](#-the-time-machine-viewing-history--undoing-mistakes)
-6.  [Teamwork & Remotes (Working With Others)](#-teamwork--remotes-working-with-others)
-7.  [The Advanced Toolbox (Specialized Power Tools)](#-the-advanced-toolbox-specialized-power-tools)
-
----
-
-## The Big Picture: How Git Thinks
-
-Before we learn any commands, let's understand the four "areas" your files live in. Think of it like writing a book report.
-
-1.  **✍️ The Working Directory (Your Desk):** This is your actual project folder. It's your messy desk where you're actively writing, editing, and creating files.
-2.  **📥 The Staging Area (The "Ready" Tray):** This is a special waiting area. When you're happy with a file (like a finished paragraph), you move it from your desk to this "ready" tray. This tells Git you want to include this specific change in your next save.
-3.  **📓 The Local Repository (Your Filing Cabinet):** This is your personal, private history of the project, stored on your computer. When you "commit," Git takes everything from your "ready" tray, creates a permanent snapshot, and files it away with a descriptive label.
-4.  **☁️ The Remote Repository (The Shared Library):** This is a central copy of the project, usually on a website like GitHub. When you "push" your work, you're adding your new snapshots from your personal filing cabinet to the shared library for your team to see.
-
-
-
-**The basic flow looks like this:**
-`Edit Files on Your Desk` -> `Move them to the Ready Tray` -> `Save a Snapshot in Your Filing Cabinet` -> `Share it with the Library`
-
----
-
-## ⚙️ The Setup (One-Time-Only)
-
-You only need to do these things when you first install Git or start a brand new project.
-
-### 🚀 `git init`
-* **What it is:** The "Start Tracking" command.
-* **Why you use it:** To turn a regular folder into a Git-powered folder (a "repository"). This creates a hidden `.git` folder inside your project where all the history and tracking information will be stored.
-* **Real-World Example:** You have a new folder for a book you're writing. You want Git to track its history.
-    ```bash
-    # Go into your new folder
-    cd my-new-book
-
-    # Tell Git to start tracking this folder
-    git init
-    # Git will reply: Initialized empty Git repository in /path/to/my-new-book/.git/
-    ```
-
-### 👤 `git config`
-* **What it is:** Your personal name tag.
-* **Why you use it:** To tell Git who you are. Every snapshot (commit) you save will be stamped with your name and email. This is crucial for teamwork, so everyone knows who made which change. The `--global` flag means you only have to do this once per computer.
-* **Real-World Example:** You've just installed Git and need to introduce yourself.
-    ```bash
-    # Set your name for all projects
-    git config --global user.name "Your Full Name"
-
-    # Set your email for all projects
-    git config --global user.email "youremail@example.com"
-    ```
-
-### 🚚 `git clone`
-* **What it is:** The project photocopier.
-* **Why you use it:** If a project already exists in a shared library (like GitHub), this command downloads a complete copy of it to your computer, including its entire history.
-* **Real-World Example:** Your team has already started a project, and you need to get a copy to start contributing.
-    ```bash
-    # Clone the project from a URL into a new folder on your computer
-    git clone [https://github.com/team-name/project-name.git](https://github.com/team-name/project-name.git)
-
-    # Now you can 'cd project-name' and you'll have the whole project!
-    ```
-
----
-
-## 📝 The Daily Grind (Your Everyday Toolkit)
-
-These are the commands you will use 90% of the time. Mastering this cycle is the key to using Git effectively.
-
-
-
-### ❓ `git status`
-* **What it is:** The "What's happening?" command.
-* **Why you use it:** It's your project's dashboard. It tells you which files you've changed, which are new, and what's in your "ready" tray (Staging Area). It’s always a good idea to run this command before doing anything else.
-* **Real-World Example:** You've been editing a few files and want to see a summary of your work.
-    ```bash
-    git status
-    # Git might reply:
-    # On branch main
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #
-    #   modified:   chapter-1.txt
-    #
-    # Untracked files:
-    #   (use "git add <file>..." to include in what will be committed)
-    #
-    #   notes.txt
-    ```
-
-### 📥 `git add`
-* **What it is:** Moves your changes to the "Ready" tray.
-* **Why you use it:** To select which of your changes you want to include in your next save. This allows you to save related changes together, even if you've worked on multiple things at once.
-* **Real-World Example:** You've finished editing `chapter-1.txt` and created a new `notes.txt` file. You want to save the chapter changes but not the notes yet.
-    ```bash
-    # Add just the chapter-1.txt file to the staging area
-    git add chapter-1.txt
-
-    # If you wanted to add ALL changes (new, modified, deleted), you would use:
-    # git add .
-    ```
-
-### 💾 `git commit`
-* **What it is:** The "Save Snapshot" button.
-* **Why you use it:** It takes everything in the "Ready" tray and saves it as a permanent snapshot in your local history (your "Filing Cabinet"). Every commit needs a descriptive message (`-m`) to explain *what* you changed. This is the most important part!
-* **Real-World Example:** You've `add`ed your changes and are ready to save them with a clear message.
-    ```bash
-    git commit -m "Corrected grammar and spelling in Chapter 1"
-    # Git will reply with details about the snapshot it just created.
-    ```
-
-### 📤 `git push`
-* **What it is:** Shares your saved snapshots with the team.
-* **Why you use it:** To upload your new, committed snapshots from your computer's "Filing Cabinet" to the shared "Library" (e.g., GitHub). This makes your changes visible to your teammates.
-* **Real-World Example:** You've committed a few changes and now you want to share your progress.
-    ```bash
-    # 'origin' is the default name for the remote library
-    # 'main' is the default name for the primary timeline/branch
-    git push origin main
-    ```
-
-### 📥 `git pull`
-* **What it is:** Gets the latest changes from the team.
-* **Why you use it:** To download and merge any new snapshots from the shared "Library" into your local project. It's a good habit to `pull` before you start working each day to make sure you have the latest version.
-* **Real-World Example:** You're about to start working and want to make sure you have the latest changes from your teammates.
-    ```bash
-    git pull origin main
-    ```
-
----
-
-## 🌿 Working in Parallel (The Magic of Branches)
-
-Imagine you want to add a new chapter to your book, but you're not sure if it will work. You don't want to mess up your main draft. **Branches** are the answer! A branch is a parallel universe where you can experiment safely.
-
-
-
-### 🌳 `git branch`
-* **What it is:** The branch management tool.
-* **Why you use it:** To create new parallel universes, list existing ones, or delete them.
-* **Real-World Example:** You want to create a new branch to write a "Foreword" for your book.
-    ```bash
-    # Create a new branch called 'add-foreword'
-    git branch add-foreword
-
-    # List all branches in your project (your current one will have a *)
-    git branch
-    # Output:
-    # * main
-    #   add-foreword
-    ```
-
-### 🏃 `git checkout`
-* **What it is:** The universe-hopper.
-* **Why you use it:** To switch between your different branches. When you switch, all the files on your "Desk" will magically change to match the versions in that branch's history.
-* **Real-World Example:** You just created the `add-foreword` branch, and now you want to start working in it.
-    ```bash
-    # Switch to the new branch
-    git checkout add-foreword
-
-    # A popular shortcut to CREATE and CHECKOUT a new branch in one command:
-    # git checkout -b another-new-feature
-    ```
-
-### 🤝 `git merge`
-* **What it is:** The "Combine Universes" command.
-* **Why you use it:** When you're happy with the work in your experimental branch, you can merge it back into your main branch. Git will intelligently combine the changes.
-* **Real-World Example:** You've finished writing the foreword in the `add-foreword` branch and want to add it to your main draft.
-    ```bash
-    # First, hop back to your main branch
-    git checkout main
-
-    # Now, merge the 'add-foreword' branch into 'main'
-    git merge add-foreword
-    # Your main branch now contains the new foreword!
-    ```
-
----
-
-## ⏪ The Time Machine (Viewing History & Undoing Mistakes)
-
-Git's real power is its perfect memory. Here's how to look into the past and fix mistakes.
-
-### 📜 `git log`
-* **What it is:** Your project's detailed diary.
-* **Why you use it:** To see a complete list of every snapshot (commit) ever saved. This helps you understand the history of the project, find old versions, and see who changed what.
-* **Real-World Example:** You want to see the recent history of your project.
-    ```bash
-    # Show the full history with authors, dates, and messages
-    git log
-
-    # A much cleaner, one-line view of the history
-    git log --oneline
-
-    # A beautiful view with branches drawn out
-    git log --graph --oneline --decorate --all
-    ```
-
-### 🔬 `git diff`
-* **What it is:** The "Spot the Difference" tool.
-* **Why you use it:** To see the exact line-by-line changes between various states of your project.
-* **Real-World Example:** You've edited `chapter-1.txt` but haven't staged it yet. You want to review your changes.
-    ```bash
-    # See differences between your "Desk" and your "Ready Tray"
-    git diff
-
-    # If you've staged the file, see differences between the "Ready Tray" and your last save
-    git diff --staged
-    ```
-
-### ♻️ `git restore`
-* **What it is:** The modern "undo" command for your "Desk".
-* **Why you use it:** To quickly discard changes you've made to a file in your working directory, reverting it back to how it was in the last snapshot.
-* **Real-World Example:** You made a mess of `chapter-2.txt` and just want to start over from the last saved version.
-    ```bash
-    # Revert the file to its last committed state
-    git restore chapter-2.txt
-    ```
-
-### 🤯 `git reset`
-* **What it is:** The powerful (and dangerous) "rewind" button.
-* **Why you use it:** To move your branch's history back to an older commit. It can be used to unstage files or completely erase commits.
-> **Warning:** Be very careful with `git reset`. Using the `--hard` flag can permanently delete your work. Only use it on commits you haven't shared yet.
-
-* **Real-World Example:** You just made a commit, but you realize you forgot to add a file. You want to undo the commit but keep your changes.
-    ```bash
-    # Get the ID of the commit BEFORE your last one from 'git log'
-    # Or, use HEAD~1 to mean "the one before the most recent"
-    # This moves the commit back, but leaves your changes on your "Desk"
-    git reset HEAD~1
-
-    # Now you can 'git add' the missing file and commit again!
-    ```
-
-### ↩️ `git revert`
-* **What it is:** The **safe** "undo" for shared history.
-* **Why you use it:** Instead of deleting a commit from history (which is dangerous if you've shared it), `revert` creates a *brand new commit* that does the exact opposite of the bad one. It's like publishing a correction in a newspaper.
-* **Real-World Example:** You pushed a commit that introduced a bug. You need to undo it without messing up the history for your teammates.
-    ```bash
-    # Find the ID of the bad commit from 'git log'
-    git revert a1b2c3d4
-    # Git will create a new commit that undoes the changes from a1b2c3d4.
-    # Now you can 'git push' this new "correction" commit.
-    ```
-
-### 🧹 `git clean`
-* **What it is:** Cleans up extra files on your "Desk".
-* **Why you use it:** To remove untracked files (files that Git doesn't know about) from your working directory. This is great for deleting temporary or generated files.
-* **Real-World Example:** Your project has created some `temp.log` files that you don't need.
-    ```bash
-    # Do a "dry run" to see what would be deleted
-    git clean -n
-
-    # Forcefully delete the untracked files
-    git clean -f
-    ```
----
-
-## 🤝 Teamwork & Remotes (Working With Others)
-
-"Remotes" are just different versions of your project's "Shared Library".
-
-### 📡 `git remote`
-* **What it is:** The address book for your shared libraries.
-* **Why you use it:** To manage your connections to remote repositories.
-* **Real-World Example:** You want to see which remote libraries you're connected to.
-    ```bash
-    # List all remotes with their URLs
-    git remote -v
-    # Output might be:
-    # origin  [https://github.com/team-name/project-name.git](https://github.com/team-name/project-name.git) (fetch)
-    # origin  [https://github.com/team-name/project-name.git](https://github.com/team-name/project-name.git) (push)
-    ```
-
-### 🔭 `git fetch`
-* **What it is:** The "look but don't touch" version of `pull`.
-* **Why you use it:** `git pull` is actually two commands: `git fetch` then `git merge`. `fetch` on its own just downloads all the latest information from the shared library but does **not** automatically merge it into your work. This lets you inspect the changes first before applying them to your own branches.
-* **Real-World Example:** You want to see if your teammate has pushed the "Chapter 3" branch yet, without affecting your own work.
-    ```bash
-    # Download all the latest info from origin
-    git fetch origin
-
-    # Now you can check if the branch exists
-    git branch -r # '-r' lists remote branches
-    ```
-
----
-
-## 🛠️ The Advanced Toolbox (Specialized Power Tools)
-
-Once you've mastered the basics, these commands will feel like superpowers.
-
-### 🗄️ `git stash`
-* **What it is:** A magic drawer for your unfinished work.
-* **Why you use it:** You're in the middle of a big change, but an urgent bug report comes in. You can't commit your half-finished work. `git stash` lets you temporarily hide all your changes, giving you a clean slate to fix the bug.
-* **Real-World Example:**
-    ```bash
-    # You have unfinished work. Hide it!
-    git stash
-
-    # Your project is now clean. Checkout a new branch, fix the bug, commit, etc.
-    # When you're ready to come back...
-
-    # Re-apply your hidden changes and remove them from the stash list
-    git stash pop
-    ```
-
-### 🏷️ `git tag`
-* **What it is:** A permanent bookmark for a commit.
-* **Why you use it:** To mark a specific snapshot as important, usually for version releases. A branch moves as you add commits, but a tag always points to the same spot.
-* **Real-World Example:** You've just finished the first draft of your book and want to mark it as `v1.0`.
-    ```bash
-    # Tag your most recent commit as v1.0
-    git tag -a v1.0 -m "First complete draft"
-
-    # Don't forget to push your tags to the shared library!
-    git push --tags
-    ```
-
-### 📖 `git rebase`
-* **What it is:** The "history re-writer". An alternative to `merge`.
-* **Why you use it:** It helps create a cleaner, more linear project history. Instead of a messy merge commit, `rebase` takes your commits and neatly places them on top of the latest changes. It makes the history look like a straight line.
-> **Warning:** Avoid using `rebase` on public, shared branches as it rewrites history, which can cause major problems for your teammates. It's best used on your own private branches.
-
-* **Real-World Example:** You've been working on a feature branch while your team updated the `main` branch. You want to update your feature branch with the latest `main` changes.
-    ```bash
-    # On your feature branch, run:
-    git rebase main
-    # This replays your commits on top of the latest 'main' branch.
-    ```
-
-### 🤏 `git cherry-pick`
-* **What it is:** A surgical tool to grab a single commit.
-* **Why you use it:** Imagine one specific commit from another branch has a bug fix you need *right now*, but you don't want to merge that entire messy branch. `cherry-pick` lets you grab just that one commit and apply it to your current branch.
-* **Real-World Example:**
-    ```bash
-    # Find the ID of the commit you want from another branch's 'git log'
-    git cherry-pick a1b2c3d4
-    ```
-
-### 👉 `git blame`
-* **What it is:** The "Who Dunnit?" command.
-* **Why you use it:** It shows you, for every single line in a file, who was the last person to change it and in which commit. It's incredibly useful for understanding why a certain piece of code exists. It's not for "blaming" people, but for finding the right person to ask questions!
-* **Real-World Example:**
-    ```bash
-    git blame style.css
-    ```
-
-### 🎯 `git bisect`
-* **What it is:** The automatic bug hunter.
-* **Why you use it:** A bug appeared sometime in the last 100 commits, but you don't know where. `bisect` helps you find the exact commit that introduced the bug. It performs a binary search: you give it a "good" commit (no bug) and a "bad" commit (has the bug). It then checks out the commit in the middle and asks you, "Is this one good or bad?". You repeat this, and it quickly narrows down the culprit.
-* **Real-World Example:**
-    ```bash
-    git bisect start
-    git bisect bad      # Mark the current commit as having the bug
-    git bisect good v1.2  # Mark an old version that was bug-free
-    # Now Git will check out commits for you. Test each one and run...
-    # 'git bisect good' or 'git bisect bad' until Git finds the source.
-    git bisect reset  # To end the session
-    ```
-### 📚 `git reflog`
-* **What it is:** Your personal safety net.
-* **Why you use it:** The reflog keeps a record of *everything* you do in your local repository (every checkout, commit, reset, etc.). If you ever think you've permanently lost work (e.g., after a bad `reset --hard`), the reflog is your last hope. It tracks where you've been, allowing you to find lost commits and restore them.
-* **Real-World Example:**
-    ```bash
-    # See a log of all your recent actions
-    git reflog
-    # You can then find the ID of the state you want to return to and use 'git reset'.
-    ```
-
----
-
-And that's a wrap! This list covers a huge range of what Git can do. Don't be overwhelmed. Start with the "Daily Grind" section and practice that flow. As you get more comfortable, you'll naturally start exploring the more advanced tools. Happy versioning!
+# Git Class – Complete Guide
+
+## How Git works
+- Flow: Working Directory → Staging Area (Index) → Local Repository (HEAD) → Remote Repository.[4]
+```mermaid
+flowchart LR
+  A[Working Directory] --> B[Staging Area (Index)]
+  B --> C[Local Repo (HEAD)]
+  C --> D[Remote Repo]
+```
+
+
+## Quick start
+- Verify Git: git --version — Check installation.[4]
+- Set identity: git config --global user.name "Your Name"; git config --global user.email "you@example.com".[4]
+- Initialize: git init — Start a repository in current folder.[4]
+- Clone: git clone <url> [dir] — Copy a remote repository locally.[4]
+
+Example:
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/<user>/<repo>.git
+git push -u origin main
+```
+
+
+## Status and inspection
+- git status — Show what’s changed and what’s staged.[4]
+- git log — Show commit history; add --oneline, --graph, --all for compact graph.[5]
+- git log --oneline — One-line commit list.[5]
+- git log -p <file> — Show diffs per commit for a file.[5]
+- git log --stat — Files changed per commit.[5]
+- git log --since="2 weeks ago" — Commits in last two weeks.[5]
+- git log --since="2023-01-01" --until="2023-12-31" — Commits in a date range.[5]
+- git log --author="Name" — Filter by author.[5]
+- git log --grep="term" — Filter by message text.[5]
+- git log --pretty=format:"%h - %an, %ar : %s" — Custom format.[5]
+- git log --reverse — Oldest first.[5]
+- git log --topo-order — Topological ordering.[5]
+- git log --abbrev-commit — Short hashes.[5]
+- git log --patch-with-stat — Patch plus summary.[5]
+- git log --follow <file> — History across renames.[5]
+- git log --no-merges — Hide merge commits.[5]
+- git log --all — Show all branches.[5]
+- git log --graph — ASCII graph.[5]
+- git log --decorate — Show refs on commits.[5]
+
+Tip: Combine multiple filters, e.g., git log --since="1 month ago" --author="Alice" --grep="bug fix" --oneline.[5]
+
+## Show details
+- git show — Show last commit.[5]
+- git show <commit id> — Show a specific commit.[5]
+- git show <tag name> — Show a tag’s target.[5]
+- Show only filenames for a commit:
+```bash
+git show --pretty="" --name-only <commit-id>
+```
+
+
+## Add, commit, and diff
+- git add <path> — Stage new/modified files.[4]
+- git add . or -A — Stage changes in current folder/repo.[5]
+- git commit -m "MSG" — Commit staged changes.[4]
+- git commit -am "MSG" — Stage tracked modifications and commit (skips new files).[5]
+- git diff — Working vs index differences.[5]
+- git diff --staged — Index vs HEAD differences.[5]
+
+Example:
+```bash
+git add app.py
+git commit -m "feat: add app"
+git diff --staged
+```
+
+
+## Files, index, and restore/reset
+- git reset HEAD <file> — Unstage (keep working changes).[5]
+- git rm --cached <file> — Untrack file but keep it.[5]
+- git rm <file> — Remove file and stage deletion.[5]
+- git mv <old> <new> — Rename/move and stage.[5]
+- git restore <file> — Discard working changes for a file.[5]
+- git restore --staged <file> — Unstage but keep changes.[5]
+- git restore --source=<commit id> <file> — Restore a file from a commit.[5]
+- git restore --worktree <file> — Discard working changes.[5]
+- git restore --staged --worktree <file> — Unstage and discard working changes.[5]
+- git restore --source=<commit id> --worktree <file> — Restore to a commit and discard working changes.[5]
+
+## Branching and switching
+- git branch — List local branches; -r remote-only; -a all.[5]
+- git branch <name> — Create a branch.[5]
+- git branch -d <name> — Delete a fully merged branch.[5]
+- git branch -m <old> <new> — Rename a branch.[5]
+- git checkout <name> — Switch to branch (legacy).[5]
+- git checkout -b <name> — Create and switch.[5]
+- git switch <name> — Switch to branch (modern).[5]
+- git switch -c <name> — Create and switch (modern).[5]
+
+Diagram:
+```mermaid
+gitGraph
+  commit id: "Init"
+  branch feature
+  checkout feature
+  commit id: "Work 1"
+  commit id: "Work 2"
+  checkout main
+  merge feature
+```
+
+
+## Merge
+- git merge <branch> — Merge target branch into current.[5]
+- Resolve conflicts if shown, then:
+```bash
+git add <resolved-files>
+git commit
+```
+
+
+## Rebase (linear history)
+- git rebase <branch> — Replay current branch commits on top of target.[6]
+- git rebase -i <base> — Interactive: reorder, squash, edit.[6]
+- Controls: git rebase --abort | --continue | --skip — Manage rebase steps [6].  
+- Strategy knobs (advanced): --strategy=<strategy>, --strategy-option=<opt>, --rebase-merges, --root, --autostash, --keep-empty, --no-ff (merge-like behavior), --preserve-merges (legacy), --exec <cmd>.[6]
+
+Example:
+```bash
+git switch feature/x
+git fetch origin
+git rebase origin/main
+# fix conflicts, then
+git rebase --continue
+```
+
+
+Diagram:
+```mermaid
+gitGraph
+  commit id: "A"
+  branch feature
+  commit id: "F1"
+  commit id: "F2"
+  checkout main
+  commit id: "B"
+  checkout feature
+  # After rebase onto main: F1,F2 move after B
+  commit id: "rebase onto main"
+```
+
+
+## Remote repositories
+- git remote add <alias> <url> — Add remote.[5]
+- git remote -v — Show remotes and URLs.[5]
+- git remote show <alias> — Remote details.[5]
+- git remote set-url <alias> <new url> — Change URL.[5]
+- git remote remove <alias> — Remove remote.[5]
+- git remote rename <old> <new> — Rename remote.[5]
+- git remote set-head <alias> <branch> — Set default branch ref.[5]
+- Common: origin (fork), upstream (original).[5]
+
+Examples:
+```bash
+git remote add origin https://github.com/BetterCallSatish/Satish.git
+git remote show origin
+git remote set-url origin https://github.com/<user>/<repo>.git
+```
+
+
+## Fetch, pull, and update
+- git fetch <alias> — Download refs/objects (no merge).[5]
+- git fetch --all — Fetch all remotes.[5]
+- git fetch --prune — Remove deleted remote branches from refs.[5]
+- git fetch --tags — Fetch tags.[5]
+- git fetch --depth=<N> — Shallow fetch limited history.[5]
+- Any combinations like:
+  - git fetch --all --prune.[5]
+  - git fetch <alias> --prune.[5]
+  - git fetch <alias> <branch> [--prune] [--tags] [--depth=<N>].[5]
+- git pull <alias> <branch> — Fetch and merge into current branch.[4]
+- Safety tip: prefer git pull --ff-only or fetch + rebase/merge explicitly.[5]
+
+## Push and delete
+- git push <alias> <branch> — Push current branch.[4]
+- git push -u origin <branch> — Set upstream; future git push works without args.[5]
+- git push <alias> --all — Push all branches.[5]
+- git push <alias> --tags — Push all tags.[5]
+- git push <alias> <branch> --force — Overwrite remote (danger).[5]
+- git push --force-with-lease <alias> <branch> — Safer force (prevents clobbering others).[5]
+- Delete remote branch:
+  - Preferred: git push <alias> --delete <branch>.[5]
+  - Legacy colon form: git push <alias> :<branch>.[5]
+
+Examples:
+```bash
+git push -u origin main
+git push origin --delete feature/old
+git push --force-with-lease origin main
+```
+
+
+## Clone variations
+- git clone <url> — Clone repo.[4]
+- git clone <url> <directory> — Clone into specific folder.[5]
+- git clone --depth=<N> <url> — Shallow clone limited history.[5]
+- git clone --branch=<name> <url> — Specific branch.[5]
+- git clone --single-branch <url> — Only default branch history.[5]
+- git clone --mirror <url> — Bare mirror (all refs).[5]
+- Submodules: git clone --recurse-submodules <url>.[5]
+- Mix options, e.g., --depth + --branch + --single-branch.[5]
+
+## Undo and recovery
+- git revert <commit> — Create a new commit that undoes a commit (safe).[5]
+- git reset --soft <commit> — Move HEAD; keep index/working changes.[5]
+- git reset --mixed <commit> — Default; keep working, clear index.[5]
+- git reset --hard <commit|HEAD~1> — Reset HEAD/index/working (destructive) [5].  
+- git reflog — Show HEAD movement history to recover lost commits.[5]
+
+Examples:
+```bash
+git revert <bad-commit>
+git reset --hard HEAD~1
+git reflog
+git reset --hard <reflog-hash>
+```
+
+
+## Clean workspace
+- git clean -n — Dry run of untracked deletions.[5]
+- git clean -f — Remove untracked files.[5]
+- Flags: -d include directories; -x include ignored files.[5]
+- Maintenance: git gc — Optimize; git fsck — Verify repo; git prune — Remove unreachable (usually via gc).[5]
+
+## Stash (save WIP)
+- Concepts: stash saves working tree and optionally index; useful before context switching.[7]
+- Save:
+  - git stash — Stash tracked modified files.[7]
+  - git stash save "message" — Named save (older form).[7]
+  - git stash push -m "message" — Preferred named save.[7]
+  - git stash push -u — Include untracked.[7]
+  - git stash push -a — Include all (tracked + untracked + ignored).[7]
+  - git stash push --keep-index — Keep staged changes intact.[7]
+  - git stash push --include-untracked — Same as -u.[7]
+  - Index-aware variants appear again below per your list for completeness.[7]
+- Inspect and apply:
+  - git stash list — Show stashes.[7]
+  - git stash show — Summary; add -p for patch.[7]
+  - git stash apply [stash@{n}] — Apply without dropping.[7]
+  - git stash pop [--index] [stash@{n}] — Apply and drop; --index also restores index state if recorded.[7]
+  - git stash drop [stash@{n}] — Remove one stash.[7]
+  - git stash clear — Remove all stashes.[7]
+  - git stash branch <branch> [stash@{n}] — Create branch from stash.[7]
+- Index-specific variants (explicit for your list):
+  - git stash apply --index [stash@{n}].[7]
+  - git stash apply --index.[7]
+  - git stash pop --index.[7]
+  - git stash pop --index <stash id>.[7]
+  - git stash drop --index <stash id>.[7]
+  - git stash drop --index.[7]
+  - git stash clear --index.[7]
+  - git stash branch <branch> --index <stash id>.[7]
+  - git stash branch <branch> --index.[7]
+  - git stash list --index.[7]
+  - git stash show --index.[7]
+  - git stash show -p --index.[7]
+
+Examples:
+```bash
+git stash push -u -m "WIP API"
+git stash list
+git stash pop --index
+```
+
+
+## Tags
+- git tag <name> — Lightweight tag.[5]
+- git tag -a <name> -m "msg" — Annotated tag (recommended).[5]
+- git show <tag> — Show tag/target details.[5]
+- git push origin <tag> — Push one tag; or git push origin --tags for all tags.[5]
+
+## Cherry-pick
+- git cherry-pick <commit id> — Apply a commit to current branch.[5]
+- git cherry-pick -n <commit> — Apply without committing.[5]
+- git cherry-pick --edit <commit> — Edit message.[5]
+- Continue/abort/skip: --continue | --abort | --skip [5].  
+- Strategy options: --strategy=<strategy> | --strategy-option=<opt> [5].  
+- Signing and dates: --gpg-sign <key id> | --committer-date-is-author-date | --ignore-date | --keep-empty | --no-commit | --signoff | --verbose | --quiet | --allow-empty [5].  
+
+Example:
+```bash
+git cherry-pick <hash>
+```
+
+
+## Reflog
+- git reflog — History of head/branch changes; great for recovery.[5]
+- Expire entries: git reflog expire --expire=now --all.[5]
+
+## Archive
+- git archive --format=zip --output=<file>.zip <branch|tag> — Create zip of tree [5].  
+
+## Submodules
+- git submodule add <repo url> <path> — Add a submodule.[5]
+- git submodule init — Initialize submodules.[5]
+- git submodule update — Update to recorded commit.[5]
+- Common combos:
+  - git submodule update --init --recursive.[5]
+  - git submodule update --remote — Track latest upstream commits.[5]
+  - --merge | --rebase | --checkout | --force variants as listed (applies chosen strategy/behavior) [5].  
+- Other tasks:
+  - git submodule foreach <command> — Run a command in each submodule.[5]
+  - git submodule status — Show commit pointers.[5]
+  - git submodule sync — Sync URLs from .gitmodules.[5]
+  - git submodule deinit <path> | --all — Deinitialize [5].  
+  - git submodule absorbgitdirs — Move submodule .git dirs to superproject.[5]
+
+## Worktrees
+- git worktree add <path> <branch> — Create another working tree for a branch.[5]
+- git worktree remove <path> — Remove worktree.[5]
+
+## Bisect (find bad commit fast)
+- git bisect start — Start bisect.[5]
+- git bisect good <commit> — Mark good.[5]
+- git bisect bad <commit> — Mark bad.[5]
+- git bisect reset — End session.[5]
+
+## Rerere
+- git rerere — Enable reusing recorded conflict resolutions; speeds up repeated merges/rebases.[5]
+
+## Remote details and maintenance
+- git remote show origin — Details for origin.[5]
+- git remote add upstream <url> — Add upstream.[5]
+- git remote set-head origin main — Set default branch ref.[5]
+- git remote prune origin — Remove stale remote-tracking refs.[5]
+- git remote update [origin] [--prune] — Fetch remotes (with prune).[5]
+
+## Push matrix (complete variants requested)
+- General: git push <alias> <branch name>.[5]
+- All branches: git push <alias> --all.[5]
+- Tags: git push <alias> --tags.[5]
+- Force: git push <alias> <branch> --force.[5]
+- Set upstream: git push <alias> <branch> --set-upstream.[5]
+- Dry run: git push <alias> <branch> --dry-run.[5]
+- Delete branch:
+  - git push <alias> <branch> --delete (not standard form; prefer below).[5]
+  - Preferred: git push <alias> --delete <branch>.[5]
+  - Legacy: git push <alias> :<branch>.[5]
+- Follow tags with changes: --follow-tags.[5]
+- Skip hooks: --no-verify.[5]
+- Atomic multi-branch: --atomic.[5]
+- Safe force: --force-with-lease.[5]
+- Mirror all refs: --mirror.[5]
+- Progress/quiet/verbose: --progress | --quiet | --verbose [5].  
+- Refspec/custom receive/alternate URL: --refspec=<refspec> | --receive-pack=<path> | --repo=<url> [5].  
+- Duplicated patterns from your list including origin main combos are covered by these canonical forms (e.g., git push origin main --set-upstream equals git push -u origin main).[5]
+
+Examples:
+```bash
+git push -u origin main
+git push origin --tags
+git push --force-with-lease origin feature/x
+git push origin --delete old/branch
+```
+
+
+## Configuration
+- Identity: git config --global user.name "Your Name"; git config --global user.email "you@example.com".[4]
+- Editor/Tools: git config --global core.editor <editor>; git config --global merge.tool <tool>; git config --global diff.tool <tool>.[5]
+- List all: git config --list.[5]
+- mergetool/difftool: git mergetool; git difftool.[5]
+
+## Extra porcelain commands (index)
+- Full Git command reference with porcelain and plumbing is in the main docs (e.g., git-add, git-archive, git-bisect, git-branch, git-checkout, git-cherry-pick, git-clean, git-clone, git-commit, git-describe, git-diff, and more).[8]
+
+## Visuals: flow and graphs
+- GitHub renders Mermaid in Markdown; use fenced code blocks with language mermaid in README.md and PRs.[2][3]
+- Flowchart syntax reference if customizing diagrams further.[9]
+
+Simple branching diagram:
+```mermaid
+%%{init: { 'theme': 'base' } }%%
+gitGraph
+  commit id: "C0"
+  branch dev
+  commit id: "C1"
+  branch feature/login
+  checkout feature/login
+  commit id: "C2"
+  commit id: "C3"
+  checkout dev
+  merge feature/login
+  checkout main
+  merge dev
+```
+
+
+***
+
+Appendix: legacy and duplicates from the original list
+- git push alias master — Legacy default branch name “master”; use main for new repos.[4]
+- Colon delete form aliases replicated as modern forms above; both are included by intent.[5]
+- Repeated stash --index and fetch/prune/tags/depth combinations were included explicitly or generalized to canonical flags to avoid redundancy while preserving capability.[7]
+
+References
+- Git official documentation index and individual command manuals.[8][5]
+- GitHub Docs: About Git, basic commands, and Mermaid diagrams in Markdown.[3][4]
+- Mermaid Git graph and flowchart syntax references; GitHub supports Mermaid in README.md.[2][9][1]
+
+Notes
+- The README includes every command/variant from the supplied list, either verbatim or via its canonical/modern equivalent and notes, keeping behavior intact while simplifying wording and examples for clarity.[5]
+
+[1](https://docs.mermaidchart.com/mermaid-oss/syntax/gitgraph.html)
+[2](https://github.blog/developer-skills/github/include-diagrams-markdown-files-mermaid/)
+[3](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams)
+[4](https://docs.github.com/en/get-started/using-git/about-git)
+[5](https://git-scm.com/docs)
+[6](https://git-scm.com/docs/git-rebase)
+[7](https://git-scm.com/docs/git-stash)
+[8](https://git-scm.com/docs/git)
+[9](https://docs.mermaidchart.com/mermaid-oss/syntax/flowchart.html)
+[10](https://newdevsguide.com/2023/04/11/illustrating-git-branching-with-markdown-mermaid-js/)
+[11](https://www.jetbrains.com/help/writerside/mermaid-diagrams.html)
+[12](https://stackoverflow.com/questions/53883747/how-to-make-github-pages-markdown-support-mermaid-diagram)
+[13](https://mermaid.js.org/intro/syntax-reference.html)
+[14](https://github.com/mermaid-js/mermaid)
+[15](https://docs.gitlab.com/topics/git/commands/)
+[16](https://mermaid.js.org/intro/)
+[17](https://mermaid.js.org)
+[18](https://www.atlassian.com/git/glossary)
+[19](https://www.youtube.com/watch?v=ooXfqNpLPZc)
+[20](https://www.freecodecamp.org/news/diagrams-as-code-with-mermaid-github-and-vs-code/)
+[21](https://dev.to/integerman/illustrating-git-branching-with-markdown-038-mermaidjs-5h0p)
+[22](https://education.github.com/git-cheat-sheet-education.pdf)
